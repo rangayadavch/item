@@ -8,20 +8,20 @@ This project is a RESTful web application utilizing the Flask framework which ac
 This project has one main Python module app.py which runs the Flask application. A SQL database is created using the database_setup.py module and you can populate the database with test data using database_init.py. The Flask application uses stored HTML templates in the tempaltes folder to build the front-end of the application. CSS/JS/Images are stored in the static directory.
 
 ## Skills Required
-Python
-HTML
-CSS
-OAuth
-Flask Framework
+1.Python
+2.HTML
+3.CSS
+4.OAuth
+5.Flask Framework
 
 ## Dependencies
-Vagrant
-Udacity Vagrantfile
-VirtualBox
-## How to Install
-Install Vagrant & VirtualBox
-Clone the Udacity Vagrantfile
-Go to Vagrant directory and either clone this repo or download and place zip here
+Vagrant 
+Udacity Vagrantfile 
+VirtualBox 
+## How to Install 
+Install Vagrant & VirtualBox 
+Clone the Udacity Vagrantfile 
+Go to Vagrant directory and either clone this repo or download and place zip here 
 Launch the Vagrant VM (vagrant up)
 Log into Vagrant VM (vagrant ssh)
 Navigate to cd/vagrant as instructed in terminal
