@@ -45,18 +45,18 @@ def login_required(f):
 
 @app.route('/catalog/JSON')
 def allItemsJSON():
-    categories = session.query(Category).all()
+    categories = session.query(Type).all()
     category_dict = [c.serialize for c in categories]
     for c in range(len(category_dict)):
         items = [i.serialize for i in session.query(Items)\
                     .filter_by(category_id=category_dict[c]["id"]).all()]
         if items:
             category_dict[c]["Item"] = items
-    return jsonify(Category=category_dict)
+    return jsonify(Type=category_dict)
 
 @app.route('/catalog/categories/JSON')
 def categoriesJSON():
-    categories = session.query(Category).all()
+    categories = session.query(Type).all()
     return jsonify(categories=[c.serialize for c in categories])
 
 @app.route('/catalog/items/JSON')
@@ -80,8 +80,8 @@ def ItemJSON(category_name, item_name):
 # Homepage
 @app.route('/')
 @app.route('/catalog/')
-def showCatalog():
-    categories = session.query(Category).order_by(asc(Category.name))
+def showType():
+    categories = session.query(Type).order_by(asc(Type.name))
     items = session.query(Items).order_by(desc(Items.date)).limit(5)
     return render_template('catalog.html',
                             categories = categories,
@@ -89,9 +89,9 @@ def showCatalog():
 
 # Category Items
 @app.route('/catalog/<path:category_name>/items/')
-def showCategory(category_name):
-    categories = session.query(Category).order_by(asc(Category.name))
-    category = session.query(Category).filter_by(name=category_name).one()
+def showType(category_name):
+    categories = session.query(Type).order_by(asc(Type.name))
+    category = session.query(Type).filter_by(name=category_name).one()
     items = session.query(Items).filter_by(category=category).order_by(asc(Items.name)).all()
     print items
     count = session.query(Items).filter_by(category=category).count()
@@ -114,16 +114,16 @@ def showCategory(category_name):
 # Add a category
 @app.route('/catalog/addcategory', methods=['GET', 'POST'])
 @login_required
-def addCategory():
+def addType():
     if request.method == 'POST':
-        newCategory = Category(
+        newType = Type(
             name=request.form['name'],
             user_id=login_session['user_id'])
-        print newCategory
-        session.add(newCategory)
+        print newType
+        session.add(newType)
         session.commit()
-        flash('Category Successfully Added!')
-        return redirect(url_for('showCatalog'))
+        flash('Type Successfully Added!')
+        return redirect(url_for('showType'))
     else:
         return render_template('addcategory.html')
 
@@ -132,7 +132,7 @@ def addCategory():
 def showItem(category_name, item_name):
     item = session.query(Items).filter_by(name=item_name).one()
     creator = getUserInfo(item.user_id)
-    categories = session.query(Category).order_by(asc(Category.name))
+    categories = session.query(Type).order_by(asc(Type.name))
     if 'username' not in login_session or creator.id != login_session['user_id']:
         return render_template('public_itemdetail.html',
                                 item = item,
@@ -150,19 +150,19 @@ def showItem(category_name, item_name):
 @app.route('/catalog/add', methods=['GET', 'POST'])
 @login_required
 def addItem():
-    categories = session.query(Category).all()
+    categories = session.query(Type).all()
     if request.method == 'POST':
         newItem = Items(
             name=request.form['name'],
             description=request.form['description'],
             picture=request.form['picture'],
-            category=session.query(Category).filter_by(name=request.form['category']).one(),
+            category=session.query(Type).filter_by(name=request.form['category']).one(),
             date=datetime.datetime.now(),
             user_id=login_session['user_id'])
         session.add(newItem)
         session.commit()
         flash('Item Successfully Added!')
-        return redirect(url_for('showCatalog'))
+        return redirect(url_for('showType'))
     else:
         return render_template('additem.html',
                                 categories=categories)
@@ -170,27 +170,27 @@ def addItem():
 # Edit a category
 @app.route('/catalog/<path:category_name>/edit', methods=['GET', 'POST'])
 @login_required
-def editCategory(category_name):
-    editedCategory = session.query(Category).filter_by(name=category_name).one()
-    category = session.query(Category).filter_by(name=category_name).one()
+def editType(category_name):
+    editedType = session.query(Type).filter_by(name=category_name).one()
+    category = session.query(Type).filter_by(name=category_name).one()
     # See if the logged in user is the owner of item
-    creator = getUserInfo(editedCategory.user_id)
+    creator = getUserInfo(editedType.user_id)
     user = getUserInfo(login_session['user_id'])
     # If logged in user != item owner redirect them
     if creator.id != login_session['user_id']:
-        flash ("You cannot edit this Category. This Category belongs to %s" % creator.name)
-        return redirect(url_for('showCatalog'))
+        flash ("You cannot edit this Type. This Type belongs to %s" % creator.name)
+        return redirect(url_for('showType'))
     # POST methods
     if request.method == 'POST':
         if request.form['name']:
-            editedCategory.name = request.form['name']
-        session.add(editedCategory)
+            editedType.name = request.form['name']
+        session.add(editedType)
         session.commit()
-        flash('Category Item Successfully Edited!')
-        return  redirect(url_for('showCatalog'))
+        flash('Type Item Successfully Edited!')
+        return  redirect(url_for('showType'))
     else:
         return render_template('editcategory.html',
-                                categories=editedCategory,
+                                categories=editedType,
                                 category = category)
 
 # Edit an item
@@ -198,7 +198,7 @@ def editCategory(category_name):
 @login_required
 def editItem(category_name, item_name):
     editedItem = session.query(Items).filter_by(name=item_name).one()
-    categories = session.query(Category).all()
+    categories = session.query(Type)
     # See if the logged in user is the owner of item
     creator = getUserInfo(editedItem.user_id)
     user = getUserInfo(login_session['user_id'])
@@ -215,14 +215,14 @@ def editItem(category_name, item_name):
         if request.form['picture']:
             editedItem.picture = request.form['picture']
         if request.form['category']:
-            category = session.query(Category).filter_by(name=request.form['category']).one()
+            category = session.query(Type).filter_by(name=request.form['category']).one()
             editedItem.category = category
         time = datetime.datetime.now()
         editedItem.date = time
         session.add(editedItem)
         session.commit()
-        flash('Category Item Successfully Edited!')
-        return  redirect(url_for('showCategory',
+        flash('Type Item Successfully Edited!')
+        return  redirect(url_for('showType',
                                 category_name=editedItem.category.name))
     else:
         return render_template('edititem.html',
@@ -231,20 +231,20 @@ def editItem(category_name, item_name):
 # Delete a category
 @app.route('/catalog/<path:category_name>/delete', methods=['GET', 'POST'])
 @login_required
-def deleteCategory(category_name):
-    categoryToDelete = session.query(Category).filter_by(name=category_name).one()
+def deleteType(category_name):
+    categoryToDelete = session.query(Type).filter_by(name=category_name).one()
     # See if the logged in user is the owner of item
     creator = getUserInfo(categoryToDelete.user_id)
     user = getUserInfo(login_session['user_id'])
     # If logged in user != item owner redirect them
     if creator.id != login_session['user_id']:
-        flash ("You cannot delete this Category. This Category belongs to %s" % creator.name)
-        return redirect(url_for('showCatalog'))
+        flash ("You cannot delete this Type. This Type belongs to %s" % creator.name)
+        return redirect(url_for('showType'))
     if request.method =='POST':
         session.delete(categoryToDelete)
         session.commit()
-        flash('Category Successfully Deleted! '+categoryToDelete.name)
-        return redirect(url_for('showCatalog'))
+        flash('Type Successfully Deleted! '+categoryToDelete.name)
+        return redirect(url_for('showType'))
     else:
         return render_template('deletecategory.html',
                                 category=categoryToDelete)
@@ -256,20 +256,20 @@ def deleteCategory(category_name):
 @login_required
 def deleteItem(category_name, item_name):
     itemToDelete = session.query(Items).filter_by(name=item_name).one()
-    category = session.query(Category).filter_by(name=category_name).one()
-    categories = session.query(Category).all()
+    category = session.query(Type).filter_by(name=category_name).one()
+    categories = session.query(Type).all()
     # See if the logged in user is the owner of item
     creator = getUserInfo(itemToDelete.user_id)
     user = getUserInfo(login_session['user_id'])
     # If logged in user != item owner redirect them
     if creator.id != login_session['user_id']:
         flash ("You cannot delete this item. This item belongs to %s" % creator.name)
-        return redirect(url_for('showCatalog'))
+        return redirect(url_for('showType'))
     if request.method =='POST':
         session.delete(itemToDelete)
         session.commit()
         flash('Item Successfully Deleted! '+itemToDelete.name)
-        return redirect(url_for('showCategory',
+        return redirect(url_for('showType',
                                 category_name=category.name))
     else:
         return render_template('deleteitem.html',
@@ -431,7 +431,7 @@ def gdisconnect():
 
         # response = make_response(json.dumps('Successfully disconnected.'), 200)
         # response.headers['Content-Type'] = 'application/json'
-        response = redirect(url_for('showCatalog'))
+        response = redirect(url_for('showType'))
         flash("You are now logged out.")
         return response
     else:
