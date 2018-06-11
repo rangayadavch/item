@@ -12,7 +12,7 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 # Delete Categories if exisitng.
-session.query(Category).delete()
+session.query(Type).delete()
 # Delete Items if exisitng.
 session.query(Items).delete()
 # Delete Users if exisitng.
@@ -30,29 +30,29 @@ session.commit()
 
 
 # Create fake categories
-Category1 = Category(name="Cricket",
+Type1 = Type(name="Cricket",
                       user_id=1)
-session.add(Category1)
+session.add(Type1)
 session.commit()
 
-Category2 = Category(name="Bikes",
+Type2 = Type(name="Bikes",
                       user_id=2)
-session.add(Category2)
+session.add(Type2)
 session.commit
 
-Category3 = Category(name="Juice",
+Type3 = Type(name="Juice",
                       user_id=1)
-session.add(Category3)
+session.add(Type3)
 session.commit()
 
-Category4 = Category(name="Volley ball",
+Type4 = Type(name="Volley ball",
                       user_id=1)
-session.add(Category4)
+session.add(Type4)
 session.commit()
 
-Category5 = Category(name="Food",
+Type5 = Type(name="Food",
                       user_id=1)
-session.add(Category5)
+session.add(Type5)
 session.commit()
 
 # Populate a category with items for testing
