@@ -55,7 +55,7 @@ Type5 = Type(name="Food",
 session.add(Type5)
 session.commit()
 
-# Populate a category with items for testing
+# Populate a type of with items for testing
 # Using different users for items also
 Item1 = Items(name="Helmet",
                date=datetime.datetime.now(),
