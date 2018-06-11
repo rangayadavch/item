@@ -20,7 +20,7 @@
                 <input type ="url" class="form-control" id="picture" maxlength="250" name="picture" placeholder="http://www.example.com">
             </div>
             <div class="form-group">
-                <label for="picture">Category:</label>
+                <label for="picture">Type:</label>
                 <select name="category">
                 {% for c in categories %}
                     <option value="{{c.name}}">{{c.name}}</option>
@@ -29,7 +29,7 @@
             </div>
             <div class="form-group">
                 <button type="submit" id="submit" class="btn btn-primary">Save</button>
-                <a href="{{url_for('showCatalog')}}">
+                <a href="{{url_for('showType')}}">
                     <button type="button" class="btn btn-danger">Cancel</button>
                 </a>
             </div>
