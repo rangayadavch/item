@@ -9,24 +9,42 @@ This project has one main Python module app.py which runs the Flask application.
 
 ## Skills Required
 1.Python
+
 2.HTML
+
 3.CSS
+
 4.OAuth
+
 5.Flask Framework
 
 ## Dependencies
 Vagrant 
+
 Udacity Vagrantfile 
+
 VirtualBox 
+
 ## How to Install 
+
 Install Vagrant & VirtualBox 
+
 Clone the Udacity Vagrantfile 
+
 Go to Vagrant directory and either clone this repo or download and place zip here 
+
 Launch the Vagrant VM (vagrant up)
+
 Log into Vagrant VM (vagrant ssh)
+
 Navigate to cd/vagrant as instructed in terminal
+
 The app imports requests which is not on this vm. Run sudo pip install requests
+
 Setup application database python /item-catalog/database_setup.py
+
 *Insert fake data python /item-catalog/database_init.py
+
 Run application using python /item-catalog/app.py
+
 Access the application locally using http://localhost:5000
