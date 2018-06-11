@@ -16,12 +16,12 @@ class User(Base):
     picture = Column(String(250))
 
 class Type(Base):
-    __tablename__ = 'category'
+    __tablename__ = 'type'
 
     id = Column(Integer, primary_key = True)
     name = Column(String(255), nullable = False)
     user_id = Column(Integer, ForeignKey('user.id'))
-    user = relationship(User, backref="category")
+    user = relationship(User, backref="type")
 
     @property
     def serialize(self):
@@ -39,7 +39,7 @@ class Items(Base):
     date = Column(DateTime, nullable=False)
     description = Column(String(250))
     picture = Column(String(250))
-    category_id = Column(Integer, ForeignKey('category.id'))
+    category_id = Column(Integer, ForeignKey('type.id'))
     category = relationship(Category, backref=backref('items', cascade='all, delete'))
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User, backref="items")
@@ -52,7 +52,7 @@ class Items(Base):
             'id'            : self.id,
             'description'   : self.description,
             'picture'       : self.picture,
-            'category'      : self.category.name
+            'type'      : self.category.name
         }
 
 
