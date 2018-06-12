@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Category Items{% endblock title %}
+{% block title %}Type Items{% endblock title %}
 
 {% block content %}
 {% include "nav.html" %}
@@ -22,7 +22,7 @@
                     <div class="caption-full">
                         <img class="img-responsive img-center" src="{{ i.picture }}" alt="{{ i.name }}">
                     </div>
-                    <a href = "{{url_for('showItem', category_name = i.category.name, item_name = i.name)}}">
+                    <a href = "{{url_for('showItem', type_name = i.type.name, item_name = i.name)}}">
                         <h4>{{ i.name }}</h4>
                     </a>
                 </div>
