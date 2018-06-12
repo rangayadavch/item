@@ -15,7 +15,7 @@
 
             <div class="col-md-9">
                 <h6 class="pull-right">
-                    <a href = "{{url_for('deleteType', category_name = category)}}">DeleteType</a>
+                    <a href = "{{url_for('deleteType', type_name = type)}}">DeleteType</a>
                 </h6>
                 <h6 class="padding-bottom-26">Items (<strong>{{count}}</strong>)</h6>
                 {% for i in items %}
@@ -23,7 +23,7 @@
                     <div class="caption-full">
                         <img class="img-responsive img-center" src="{{ i.picture }}" alt="{{ i.name }}">
                     </div>
-                    <a href = "{{url_for('showItem', category_name = i.category.name, item_name = i.name)}}">
+                    <a href = "{{url_for('showItem', type_name = i.type.name, item_name = i.name)}}">
                         <h4>{{ i.name }}</h4>
                     </a>
                 </div>
