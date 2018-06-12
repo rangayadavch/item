@@ -125,7 +125,7 @@ def addType():
         flash('Type Successfully Added!')
         return redirect(url_for('showType'))
     else:
-        return render_template('addtype.html')
+        return render_template('addcategory.html')
 
 # Display a Specific Item
 @app.route('/catalog/<path:type_name>/<path:item_name>/')
@@ -189,7 +189,7 @@ def editType(type_name):
         flash('Type Item Successfully Edited!')
         return  redirect(url_for('showType'))
     else:
-        return render_template('edittype.html',
+        return render_template('editcategory.html',
                                 categories=editedType,
                                 type = type)
 
@@ -246,7 +246,7 @@ def deleteType(type_name):
         flash('Type Successfully Deleted! '+typeToDelete.name)
         return redirect(url_for('showType'))
     else:
-        return render_template('deletetype.html',
+        return render_template('deletecategory.html',
                                 type=typeToDelete)
 
 
