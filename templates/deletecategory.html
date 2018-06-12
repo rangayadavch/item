@@ -5,12 +5,12 @@
 <section id="deleteType" class="section">
     <div class="section-content container padding-1-5">
         <h1>Delete Type</h1>
-        <p class="padding-top-10">Are you sure you want to delete the category {{category.name}}?</p>
+        <p class="padding-top-10">Are you sure you want to delete the type {{type.name}}?</p>
 
-        <form action="{{url_for('deleteType', category_name = category.name)}}" method = "post" class="padding-top-10">
+        <form action="{{url_for('deleteType', type_name = category.name)}}" method = "post" class="padding-top-10">
             <div class="form-group">
                 <button type="submit" id="submit" class="btn btn-danger">Delete</button>
-                <a href="{{url_for('showType', category_name = category.name)}}">
+                <a href="{{url_for('showType', type_name = type.name)}}">
                     <button type="button" class="btn btn-default">Cancel</button>
                 </a>
             </div>
